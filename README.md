@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PX4-ROS2 bridge
 
 [![GitHub license](https://img.shields.io/github/license/PX4/px4_ros_com.svg)](https://github.com/PX4/px4_ros_com/blob/master/LICENSE) [![GitHub (pre-)release](https://img.shields.io/github/release-pre/PX4/px4_ros_com.svg)](https://github.com/PX4/px4_ros_com/releases/tag/beta) [![DOI](https://zenodo.org/badge/142936318.svg)](https://zenodo.org/badge/latestdoi/142936318) [![Build and Test package](https://github.com/PX4/px4_ros_com/workflows/Build%20and%20Test%20package/badge.svg?branch=master)](https://github.com/PX4/px4_ros_com/actions)
@@ -18,3 +19,6 @@ Use the [Issues](https://github.com/PX4/px4_ros_com/issues) section to create a 
 
 Reach the PX4 development team on the `#messaging` or `#ros` PX4 Slack channels:
 [![Slack](https://px4-slack.herokuapp.com/badge.svg)](http://slack.px4.io)
+=======
+# px4_ros2_offboardcontrol
+>>>>>>> 10cd718827a1a939893a7acd0a4377516876ecc1
