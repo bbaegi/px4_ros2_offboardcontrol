@@ -29,7 +29,8 @@ $ git clone https://github.com/bbaegi/px4_ros2_offboardcontrol.git ~/ros2_colcon
 $ cd ~/ros2_colcon_ws/src/px4_ros_com/scripts
 $ source build_ros2_workspace.bash
 ```
-> **If you use Ubuntu terminal as 'terminator', try this command in Ubuntu terminal.**
+> **Is Your terminal forced to close?**
+> If you use Ubuntu terminal as 'terminator', try this command in Ubuntu default terminal.
 
 ## 2. Usage
 
