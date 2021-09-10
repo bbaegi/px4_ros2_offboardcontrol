@@ -61,3 +61,5 @@ rtps:
     send: true
   - msg: SensorCombined
     send: true
+  - msg: VehicleLocalPosition
+    send: true
