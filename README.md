@@ -79,4 +79,3 @@ $ micrortps_agent -t UDP
 $ source ~/ros2_colcon_ws/install/setup.bash
 $ ros2 launch px4_ros_com px4_state_listener.launch.py
 ```
->>>>>>> 65923a4242d8bdc9a8b61e823ce81aebdea19f9e
