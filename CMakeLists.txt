@@ -92,10 +92,23 @@ add_executable(micrortps_agent ${MICRORTPS_AGENT_FILES})
 ament_target_dependencies(micrortps_agent fastcdr fastrtps rclcpp)
 target_link_libraries(micrortps_agent fastcdr fastrtps ${rclcpp_LIBRARIES})
 
+# Add px4_state_listener
+add_executable(px4_state_listener src/examples/listeners/px4_state_listener.cpp)
+ament_target_dependencies(px4_state_listener rclcpp px4_msgs)
+target_link_libraries(px4_state_listener)
+
+# Add SerialPort for Linux lib
+add_library(serialport SHARED src/lib/SerialPort.cpp)
+target_include_directories(serialport PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/CppLinuxSerial>
+  $<INSTALL_INTERFACE:include/CppLinuxSerial>
+)
+target_link_libraries(px4_state_listener serialport)
+
 # Add examples
 custom_executable(examples/listeners sensor_combined_listener)
 custom_executable(examples/listeners vehicle_gps_position_listener)
-custom_executable(examples/listeners px4_state_listener)
+#custom_executable(examples/listeners px4_state_listener)
 custom_executable(examples/advertisers debug_vect_advertiser)
 custom_executable(examples/offboard offboard_control)
 
@@ -122,6 +135,9 @@ ament_export_libraries(frame_transforms)
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION include/${PROJECT_NAME}
 )
+install(DIRECTORY include/CppLinuxSerial/
+        DESTINATION include/CppLinuxSerial
+)
 
 # Install artifacts
 install(DIRECTORY cmake
@@ -140,6 +156,23 @@ install(TARGETS micrortps_agent
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include
 )
+
+
+install(TARGETS px4_state_listener
+        EXPORT export_px4_state_listener
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+
+install(TARGETS serialport
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+
 
 # Install launch files
 install(DIRECTORY

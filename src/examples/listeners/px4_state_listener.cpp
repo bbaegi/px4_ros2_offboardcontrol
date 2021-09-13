@@ -38,8 +38,14 @@
  * @author Inha Baek <ihb@realtimevisual.com>
  */
 
- #include <rclcpp/rclcpp.hpp>
- #include <px4_msgs/msg/vehicle_local_position.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <px4_msgs/msg/vehicle_local_position.hpp>
+#include <CppLinuxSerial/SerialPort.hpp>
+#include <thread>
+#include <chrono>
+
+using namespace mn::CppLinuxSerial;
+using namespace std;
 
 /**
  * @brief PX4 State uORB topic data callback
@@ -65,6 +71,7 @@ public:
                         std::cout << "Velocity x: " << msg->vx << std::endl;
                         std::cout << "Velocity y: " << msg->vy << std::endl;
                         std::cout << "Velocity z: " << msg->vz << std::endl;
+
 		});
 	}
 
@@ -72,13 +79,63 @@ private:
         rclcpp::Subscription<px4_msgs::msg::VehicleLocalPosition>::SharedPtr subscription_;
 };
 
+void Serial_TX(){
+    while(true){
+        // Create serial port object and open serial port
+        SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_57600);
+        // Use SerialPort serialPort("/dev/ttyACM0", 13000); instead if you want to provide a custom baud rate
+        serialPort.SetTimeout(0); // Block when reading until any data is received
+        serialPort.Open();
+
+        // Write some ASCII datae
+        serialPort.Write("Hello");
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        // Close the serial portendl;
+        //serialPort.Close();
+    }
+}
+
+void Serial_RX(){
+    while(true){
+        // Create serial port object and open serial port
+        SerialPort serialPort("/dev/ttyUSB0", BaudRate::B_57600);
+        // Use SerialPort serialPort("/dev/ttyACM0", 13000); instead if you want to provide a custom baud rate
+        serialPort.SetTimeout(-1); // Block when reading until any data is received
+        serialPort.Open();
+
+        // Read some data back (will block until at least 1 byte is received due to the SetTimeout(-1) call above)
+        std::string readData;
+        serialPort.Read(readData);
+
+        if (!readData.empty()){
+            std::cout << readData << std::endl;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        // Close the serial portendl;
+        //serialPort.Close();
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
-        std::cout << "Starting px4_state_listener node..." << std::endl;
-	setvbuf(stdout, NULL, _IONBF, BUFSIZ);
-	rclcpp::init(argc, argv);
-        rclcpp::spin(std::make_shared<PX4StateListener>());
 
-	rclcpp::shutdown();
-	return 0;
+
+    std::cout << "Starting px4_state_listener node..." << std::endl;
+    setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<PX4StateListener>());
+    std::thread t1(Serial_TX);
+    std::thread t2(Serial_RX);
+
+    t1.join();
+    t2.join();
+
+
+    rclcpp::shutdown();
+    return 0;
 }

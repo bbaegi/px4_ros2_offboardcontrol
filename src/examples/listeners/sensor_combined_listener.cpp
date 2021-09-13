@@ -39,8 +39,9 @@
  * @author Vicente Monge
  */
 
- #include <rclcpp/rclcpp.hpp>
- #include <px4_msgs/msg/sensor_combined.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <px4_msgs/msg/sensor_combined.hpp>
+
 
 /**
  * @brief Sensor Combined uORB topic data callback
@@ -77,11 +78,11 @@ private:
 
 int main(int argc, char *argv[])
 {
-	std::cout << "Starting sensor_combined listener node..." << std::endl;
-	setvbuf(stdout, NULL, _IONBF, BUFSIZ);
-	rclcpp::init(argc, argv);
-	rclcpp::spin(std::make_shared<SensorCombinedListener>());
+    std::cout << "Starting sensor_combined listener node..." << std::endl;
+    setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<SensorCombinedListener>());
 
-	rclcpp::shutdown();
-	return 0;
+    rclcpp::shutdown();
+    return 0;
 }
