@@ -63,3 +63,7 @@ rtps:
     send: true
   - msg: VehicleLocalPosition
     send: true
+  - msg: VehicleStatus
+    send: true
+  - msg: BatteryStatus
+    send: true
