@@ -38,6 +38,9 @@
  * @author Inha Baek <devbbaegi@gmail.com>
  */
 
+#include <iostream>
+#include <memory>
+
 #include <rclcpp/rclcpp.hpp>
 #include <px4_msgs/msg/vehicle_status.hpp> // for Mode/Arming status
 #include <px4_msgs/msg/vehicle_local_position.hpp> // for local position
@@ -52,6 +55,8 @@ using namespace std;
 using std::placeholders::_1;
 
 std::string sendmsg = "";
+float position_x = 0;
+
 /**
  * @brief PX4 State uORB topic data callback
  */
@@ -65,21 +70,24 @@ public:
 
         status_subscription_ = this->create_subscription<px4_msgs::msg::VehicleStatus>(
                     "fmu/vehicle_status/out", 10, std::bind(&PX4StateListener::status_callback, this, _1));
+
         battery_subscription_ = this->create_subscription<px4_msgs::msg::BatteryStatus>(
                     "fmu/battery_status/out", 10, std::bind(&PX4StateListener::battery_callback, this, _1));
+
 
     }
 
 private:
     void position_callback(const px4_msgs::msg::VehicleLocalPosition::UniquePtr msg)
     {
-        sendmsg = "";
         /*
         std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         std::cout << "RECEIVED PX4 Position DATA"   << std::endl;
         std::cout << "============================="   << std::endl;
         std::cout << "ts: "          << msg->timestamp    << std::endl;
+        */
         std::cout << "Local Position x: " << msg->x  << std::endl;
+        /*
         std::cout << "Local Position y: " << msg->y  << std::endl;
         std::cout << "Local Postiion z: " << msg->z  << std::endl;
         std::cout << "Yaw: " << msg->heading  << std::endl;
@@ -87,7 +95,8 @@ private:
         std::cout << "Velocity y: " << msg->vy << std::endl;
         std::cout << "Velocity z: " << msg->vz << std::endl;
         */
-        sendmsg = "x : " + std::to_string(msg->x) + ", y : " + std::to_string(msg->y) + ", z : " + std::to_string(msg->z)+"\n";
+        position_x = msg->x;
+        //sendmsg = "x : " + std::to_string(msg->x);// + ", y : " + std::to_string(msg->y) + ", z : " + std::to_string(msg->z)+"\n";
     }
 
 
@@ -113,6 +122,11 @@ private:
     rclcpp::Subscription<px4_msgs::msg::VehicleStatus>::SharedPtr status_subscription_;
     rclcpp::Subscription<px4_msgs::msg::BatteryStatus>::SharedPtr battery_subscription_;
 };
+
+void callback_out(){
+    std::cout << position_x << std::endl;
+}
+
 /*
 void Serial_On(){
     while(true){
@@ -149,7 +163,17 @@ int main(int argc, char *argv[])
     std::cout << "Starting px4_state_listener node..." << std::endl;
     setvbuf(stdout, NULL, _IONBF, BUFSIZ);
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<PX4StateListener>());
+    rclcpp::WallRate loop_rate(1);
+
+
+    while(rclcpp::ok())
+    {
+        rclcpp::spin_some(std::make_shared<PX4StateListener>());
+        loop_rate.sleep();
+        callback_out();
+
+    }
+    //rclcpp::spin(std::make_shared<PX4StateListener>());
 
     //std::thread t1(Serial_On);
 
