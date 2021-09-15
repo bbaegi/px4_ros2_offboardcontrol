@@ -1,7 +1,7 @@
 # PX4-ROS2 Offboard Control (in ROS2)
 
 This repository is ROS2 Package to control PX4 multicopter in offboard Mode.
-
+(Based in [PX4-ROS2 User Guide](https://docs.px4.io/master/en/ros/ros2_comm.html, "ROS2 User Guide(PX4-ROS2 Bridge)"))
 ## 1. Setup
 
 Install Environment
@@ -11,7 +11,7 @@ Install Environment
 
 (Test Environment)
 * Ubuntu 18.04 LTS
-* FastRTPS 1.8.4 & FastRTPSGen 2.0.0
+* FastRTPS 1.8.4 & FastRTPSGen 1.0.4
 * ROS2 Dashing
 
 Build
