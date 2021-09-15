@@ -5,8 +5,14 @@ This repository is ROS2 Package to control PX4 multicopter in offboard Mode.
 ## 1. Setup
 
 Install Environment
+* Ubuntu 18.04 LTS or 20.04
 * FastRTPS(FastDDS) & FastRTPSGen
 * ROS2
+
+(Test Environment)
+* Ubuntu 18.04 LTS
+* FastRTPS 1.8.4 & FastRTPSGen 2.0.0
+* ROS2 Dashing
 
 Build
 * Create a workspace directory using:
@@ -30,7 +36,7 @@ $ cd ~/ros2_colcon_ws/src/px4_ros_com/scripts
 $ source build_ros2_workspace.bash
 ```
 > **Is Your terminal forced to close?**
-> If you use Ubuntu terminal as 'terminator', try this command in Ubuntu default terminal.
+> If you use Ubuntu extended terminal(means no default terminal), try this command in Ubuntu default terminal.
 
 ## 2. Usage
 
@@ -48,5 +54,5 @@ $ micrortps_agent -t UDP
 3. Start a listener node using launch file
 ```bash
 $ source ~/ros2_colcon_ws/install/setup.bash
-$ ros2 launch px4_ros_com px4_state_listener.launch.py
+$ px4_state_listener
 ```
