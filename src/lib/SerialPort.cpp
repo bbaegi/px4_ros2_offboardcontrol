@@ -334,7 +334,7 @@ namespace CppLinuxSerial {
             tty.c_cc[VMIN] = 0;
         } else if(timeout_ms_ > 0) {
             tty.c_cc[VTIME] = (cc_t)(timeout_ms_/100);    // 0.5 seconds read timeout
-            tty.c_cc[VMIN] = 0;
+            tty.c_cc[VMIN] = 100;
         }
 
 		//======================== (.c_iflag) ====================//
@@ -404,8 +404,8 @@ namespace CppLinuxSerial {
 		}
 
 		// Allocate memory for read buffer
-//		char buf [256];
-//		memset (&buf, '\0', sizeof buf);
+                //char buf [256];
+                //memset (&buf, '\0', sizeof buf);
 
 		// Read from file
         // We provide the underlying raw array from the readBuffer_ vector to this C api.
@@ -421,9 +421,9 @@ namespace CppLinuxSerial {
 
 		if(n > 0) {
 
-//			buf[n] = '\0';
+//                        buf[n] = '\0';
 			//printf("%s\r\n", buf);
-//			data.append(buf);
+//                        data.append(buf);
             data = std::string(&readBuffer_[0], n);
 			//std::cout << *str << " and size of string =" << str->size() << "\r\n";
 		}
