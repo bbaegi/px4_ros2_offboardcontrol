@@ -82,6 +82,14 @@ float deg2rad(float degree)
 }
 
 /**
+        msg.target_component = 1;
+        msg.source_system = 1;
+        msg.source_component = 1;
+        msg.from_external = true;
+
+        vehicle_command_publisher_->publish(msg);
+}
+
  * @brief PX4 State uORB topic data callback
  */
 class PX4StateListener : public rclcpp::Node
